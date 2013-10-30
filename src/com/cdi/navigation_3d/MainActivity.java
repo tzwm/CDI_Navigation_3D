@@ -9,7 +9,6 @@ import min3d.parser.Parser;
 import min3d.vos.Light;
 import min3d.vos.LightType;
 import android.graphics.Bitmap;
-import android.util.Log;
 
 public class MainActivity extends RendererActivity {
 	private final String material2color[][] = {{"011", "8d8d8d"},
@@ -44,49 +43,41 @@ public class MainActivity extends RendererActivity {
         IParser parser = Parser.createParser(Parser.Type.MAX_3DS,
                 getResources(), "com.cdi.navigation_3d:raw/cdi", true);
         parser.parse();
-
+        
         monster = parser.getParsedObject();
-		monster.scale().x = monster.scale().y = monster.scale().z  = .2f;
-        monster.position().x = 0;
-        monster.position().y = 0;
-        monster.position().z = 0;
 		scene.addChild(monster);
 
         monster.vertexColorsEnabled(true);
         monster.colorMaterialEnabled(true);
         initTexture();
         loadAllTexture();
+		
+        changeToView1();
+	}
+	
+	public void changeToView1() {
+		monster.scale().x = monster.scale().y = monster.scale().z  = .24f;
+        monster.position().x = -12;
+        monster.position().y = -3;
+        monster.position().z = 0;
         
-        monster.getChildByName("lab 3_149").textures().clear();
-        monster.getChildByName("lab 3_149").textures().addById("ff00e1");
-
-        
-		scene.camera().target = monster.position();
-
-        scene.camera().position.x = 0;
-        scene.camera().position.y = 0;
-        scene.camera().position.z = 0;
-
+        scene.camera().position.setAll(-7, 30, -25);
+		scene.camera().target.setAll(0, 0, 0);
+		
+		monster.getChildByName("lab 3_055").isVisible(false);
+		monster.getChildByName("lab 3_149").isVisible(false);
+		monster.getChildByName("lab 3_190").isVisible(false);
 	}
 
 	@Override
 	public void updateScene() {
-//        scene.camera().position.x = 0;
-//        scene.camera().position.y = 0;
-//        scene.camera().position.z = scene.camera().position.z + ROTATION_SPEED;
-
-		float radians = degrees * ((float)Math.PI / 180);
-
-		scene.camera().position.x = (float)Math.cos(radians) * CAM_RADIUS_X;
-		scene.camera().position.y = (float)Math.sin(radians) * CAM_RADIUS_Y;
-		scene.camera().position.z = (float)Math.sin(radians) * CAM_RADIUS_Z;
-
-        Log.d("3ds", "x:"+String.valueOf(scene.camera().position.x));
-        Log.d("3ds", "y:"+String.valueOf(scene.camera().position.y));
-        Log.d("3ds", "z:"+String.valueOf(scene.camera().position.z));
-
-		degrees += ROTATION_SPEED;
-
+//		float radians = degrees * ((float)Math.PI / 180);
+//
+//		scene.camera().position.x = (float)Math.cos(radians) * CAM_RADIUS_X;
+//		scene.camera().position.y = (float)Math.sin(radians) * CAM_RADIUS_Y;
+//		scene.camera().position.z = (float)Math.sin(radians) * CAM_RADIUS_Z;
+//
+//		degrees += ROTATION_SPEED;
 	}
 	
 	private void loadAllTexture() {
@@ -108,7 +99,6 @@ public class MainActivity extends RendererActivity {
 				monster.getChildAt(i).textures().addById("ff00e1");
 			}
 		}
-		
 	}
 	
 	private void initTexture() {
