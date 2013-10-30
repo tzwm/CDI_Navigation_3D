@@ -46,13 +46,13 @@ public class MainActivity extends RendererActivity {
         
         monster = parser.getParsedObject();
 		scene.addChild(monster);
-
+		
         monster.vertexColorsEnabled(true);
         monster.colorMaterialEnabled(true);
         initTexture();
         loadAllTexture();
 		
-        changeToView1();
+        changeToView3();
 	}
 	
 	public void changeToView1() {
@@ -69,6 +69,20 @@ public class MainActivity extends RendererActivity {
 		monster.getChildByName("lab 3_190").isVisible(false);
 	}
 
+	public void changeToView3() {
+		monster.scale().x = monster.scale().y = monster.scale().z  = .28f;
+        monster.position().x = -12;
+        monster.position().y = -19;
+        monster.position().z = 0;
+        
+        scene.camera().position.setAll(0, 32, -3);
+		scene.camera().target.setAll(0, 0, 0);
+		
+		monster.getChildByName("lab 3_055").isVisible(false);
+		monster.getChildByName("lab 3_149").isVisible(false);
+		monster.getChildByName("lab 3_190").isVisible(false);
+	}
+	
 	@Override
 	public void updateScene() {
 //		float radians = degrees * ((float)Math.PI / 180);
