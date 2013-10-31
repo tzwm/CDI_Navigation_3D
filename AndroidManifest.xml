@@ -16,18 +16,21 @@
         <activity
             android:name="com.cdi.navigation_3d.map.MapRendererActivity"
             android:label="@string/app_name" >
-
         </activity>
         <activity android:name="com.cdi.navigation_3d.ui.TestActivity" >
         </activity>
         <activity android:name="com.cdi.navigation_3d.ui.DisplayActivity" >
-
+        </activity>
+        <activity android:name="com.cdi.navigation_3d.ui.DisplayActivity2" >
+        </activity>
+        <activity android:name="com.cdi.navigation_3d.ui.DisplayActivity3" >
+        </activity>
+        <activity android:name="com.cdi.navigation_3d.ui.RouteActivity" >
         </activity>
         <activity android:name="com.cdi.navigation_3d.ui.MainActivity" >
-
         </activity>
-        <activity android:name="com.cdi.navigation_3d.ui.HelloActiity" >
-                                                            <intent-filter>
+        <activity android:name="com.cdi.navigation_3d.ui.HelloActivity" >
+            <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
