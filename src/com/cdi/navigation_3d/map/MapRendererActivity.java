@@ -1,4 +1,6 @@
-package com.cdi.navigation_3d;
+package com.cdi.navigation_3d.map;
+
+import com.cdi.navigation_3d.R;
 
 import min3d.Shared;
 import min3d.Utils;
@@ -10,7 +12,7 @@ import min3d.vos.Light;
 import min3d.vos.LightType;
 import android.graphics.Bitmap;
 
-public class MainActivity extends RendererActivity {
+public class MapRendererActivity extends RendererActivity {
 	private final String material2color[][] = {{"011", "8d8d8d"},
 								  {"012", "a7a7a7"},
 								  {"013", "ffffff"},
@@ -45,6 +47,7 @@ public class MainActivity extends RendererActivity {
         parser.parse();
         
         monster = parser.getParsedObject();
+        monster.scale().x = monster.scale().y = monster.scale().z  = .24f;
 		scene.addChild(monster);
 		
         monster.vertexColorsEnabled(true);
@@ -52,7 +55,7 @@ public class MainActivity extends RendererActivity {
         initTexture();
         loadAllTexture();
 		
-        changeToView3();
+//        changeToView3();
 	}
 	
 	public void changeToView1() {
@@ -85,13 +88,13 @@ public class MainActivity extends RendererActivity {
 	
 	@Override
 	public void updateScene() {
-//		float radians = degrees * ((float)Math.PI / 180);
-//
-//		scene.camera().position.x = (float)Math.cos(radians) * CAM_RADIUS_X;
-//		scene.camera().position.y = (float)Math.sin(radians) * CAM_RADIUS_Y;
-//		scene.camera().position.z = (float)Math.sin(radians) * CAM_RADIUS_Z;
-//
-//		degrees += ROTATION_SPEED;
+		float radians = degrees * ((float)Math.PI / 180);
+
+		scene.camera().position.x = (float)Math.cos(radians) * CAM_RADIUS_X;
+		scene.camera().position.y = (float)Math.sin(radians) * CAM_RADIUS_Y;
+		scene.camera().position.z = (float)Math.sin(radians) * CAM_RADIUS_Z;
+
+		degrees += ROTATION_SPEED;
 	}
 	
 	private void loadAllTexture() {
