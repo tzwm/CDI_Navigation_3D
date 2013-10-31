@@ -23,10 +23,19 @@
         <activity android:name="com.cdi.navigation_3d.ui.DisplayActivity" >
 
         </activity>
+        <activity android:name="com.cdi.navigation_3d.ui.DisplayActivity2" >
+
+        </activity>
+        <activity android:name="com.cdi.navigation_3d.ui.DisplayActivity3" >
+
+        </activity>
+        <activity android:name="com.cdi.navigation_3d.ui.RouteActivity" >
+
+        </activity>
         <activity android:name="com.cdi.navigation_3d.ui.MainActivity" >
 
         </activity>
-        <activity android:name="com.cdi.navigation_3d.ui.HelloActiity" >
+        <activity android:name="com.cdi.navigation_3d.ui.HelloActivity" >
                                                             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

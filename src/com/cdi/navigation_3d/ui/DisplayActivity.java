@@ -28,7 +28,7 @@ public class DisplayActivity extends FragmentActivity {
 		img_back=(ImageView)findViewById(R.id.img_back);
 		//placeholder=findViewById(R.id.fragment_placeholder);
 		fm=getSupportFragmentManager();
-		fm.beginTransaction().replace(R.id.fragment_placeholder, new ListDispFragment()).commit();
+		fm.beginTransaction().replace(R.id.fragment_placeholder, new RouteFragment()).commit();
 		
 		img_back.setOnClickListener(new OnClickListener() {			
 			@Override
@@ -41,7 +41,7 @@ public class DisplayActivity extends FragmentActivity {
 			
 			@Override
 			public void onClick(View v) {
-				fm.beginTransaction().replace(R.id.fragment_placeholder, new ListDispFragment()).commit();
+				fm.beginTransaction().replace(R.id.fragment_placeholder, new RouteFragment()).commit();
 			}
 		});
 	}
