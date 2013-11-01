@@ -1,6 +1,7 @@
 package com.cdi.navigation_3d.ui;
 
 import com.cdi.navigation_3d.R;
+import com.cdi.navigation_3d.ar.ArActivity;
 import com.cdi.navigation_3d.map.MapRendererActivity;
 
 import android.app.Activity;
@@ -33,8 +34,7 @@ public class DisplayActivity3 extends ActivityGroup {
 		img_back=(ImageView)findViewById(R.id.img_back);
 		th=(TabHost) findViewById(android.R.id.tabhost);
 		th.setup(getLocalActivityManager());
-		th.addTab(th.newTabSpec("list").setIndicator("list").setContent(new Intent(this,RouteActivity.class)));
-		th.addTab(th.newTabSpec("map").setIndicator("map").setContent(new Intent(this,MapRendererActivity.class)));
+		setUpAllTabs();
 		th.setCurrentTab(0);		
 		
 		img_back.setOnClickListener(new OnClickListener() {			
@@ -48,8 +48,9 @@ public class DisplayActivity3 extends ActivityGroup {
 			
 			@Override
 			public void onClick(View v) {
-				//fm.beginTransaction().replace(R.id.fragment_placeholder, new ListDispFragment()).commit();
-				th.setCurrentTab(0);
+				setUpAllTabs();
+			    th.setCurrentTab(0);
+				
 			}
 		});
 		
@@ -57,9 +58,25 @@ public class DisplayActivity3 extends ActivityGroup {
 			
 			@Override
 			public void onClick(View v) {
-				//fm.beginTransaction().replace(R.id.fragment_placeholder, new ListDispFragment()).commit();
+				setUpAllTabs();
 				th.setCurrentTab(1);
 			}
 		});
+		
+		img_ar.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				setUpAllTabs();
+				th.setCurrentTab(2);
+			}
+		});
+	}
+	
+	private void setUpAllTabs(){
+		th.clearAllTabs();
+		th.addTab(th.newTabSpec("list").setIndicator("list").setContent(new Intent(this,RouteActivity.class)));
+		th.addTab(th.newTabSpec("map").setIndicator("map").setContent(new Intent(this,MapRendererActivity.class)));
+		th.addTab(th.newTabSpec("ar").setIndicator("ar").setContent(new Intent(this,ArActivity.class)));
 	}
 }

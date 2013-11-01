@@ -12,6 +12,7 @@ import min3d.parser.Parser;
 import min3d.vos.Light;
 import min3d.vos.LightType;
 import android.graphics.Bitmap;
+import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -55,6 +56,12 @@ public class MapRendererActivity extends RendererActivity implements
 	private Boolean isRotate;
 
 	private float downX, downY;
+	
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		scene.reset();
+	}
 
 	@Override
 	public void initScene() {
@@ -305,6 +312,5 @@ public class MapRendererActivity extends RendererActivity implements
 	@Override
 	public void onClick(View v) {
 		// TODO Auto-generated method stub
-
-	}
+	}	
 }
