@@ -49,13 +49,19 @@ public class MapRendererActivity extends RendererActivity implements
 	private int currentView;
 	private int currentLayer;
 
-	private float downY;
+	private float cam_radius_x;
+	private float cam_radius_y;
+	private float cam_radius_z;
+	private Boolean isRotate;
+
+	private float downX, downY;
 
 	@Override
 	public void initScene() {
 		resultsEdgeList = Graph.nodes2arcs(G.result);
 		currentView = 0;
 		currentLayer = 2;
+		isRotate = false;
 
 		Light light = new Light();
 		light.type(LightType.DIRECTIONAL);
@@ -84,7 +90,7 @@ public class MapRendererActivity extends RendererActivity implements
 		Iterator iter = resultsEdgeList.iterator();
 		while (iter.hasNext()) {
 			Arc node = (Arc) iter.next();
-			if(node.name.charAt(1) == (char)(currentLayer + (int) '0')) {
+			if (node.name.charAt(1) == (char) (currentLayer + (int) '0')) {
 				monster.getChildByName(node.name).isVisible(true);
 				monster.getChildByName(node.name).textures().clear();
 				monster.getChildByName(node.name).textures().addById("ff00e1");
@@ -99,8 +105,14 @@ public class MapRendererActivity extends RendererActivity implements
 		monster.position().y = -3;
 		monster.position().z = 0;
 
-		scene.camera().position.setAll(-7, 30, -25);
+		cam_radius_x = -7;
+		cam_radius_y = 30;
+		cam_radius_z = -25;
+		scene.camera().position
+				.setAll(cam_radius_x, cam_radius_y, cam_radius_z);
 		scene.camera().target.setAll(0, 0, 0);
+
+		isRotate = false;
 	}
 
 	private void changeToView2() {
@@ -110,10 +122,16 @@ public class MapRendererActivity extends RendererActivity implements
 		monster.position().y = -5;
 		monster.position().z = 0;
 
-		scene.camera().position.setAll(0, 20, -40);
+		cam_radius_x = 0;
+		cam_radius_y = 20;
+		cam_radius_z = -40;
+		scene.camera().position
+				.setAll(cam_radius_x, cam_radius_y, cam_radius_z);
 		scene.camera().target.setAll(0, 0, 0);
 
 		monster.getChildByName("012").isVisible(false);
+
+		isRotate = true;
 	}
 
 	private void changeToView3() {
@@ -123,19 +141,28 @@ public class MapRendererActivity extends RendererActivity implements
 		monster.position().y = -19;
 		monster.position().z = 0;
 
-		scene.camera().position.setAll(0, 32, -3);
+		cam_radius_x = 0;
+		cam_radius_y = 32;
+		cam_radius_z = -3;
+		scene.camera().position
+				.setAll(cam_radius_x, cam_radius_y, cam_radius_z);
 		scene.camera().target.setAll(0, 0, 0);
+
+		isRotate = false;
 	}
 
 	@Override
 	public void updateScene() {
-		// float radians = degrees * ((float)Math.PI / 180);
-		//
-		// scene.camera().position.x = (float)Math.cos(radians) * CAM_RADIUS_X;
+		if(!isRotate)
+			return;
+		
+		float radians = degrees * ((float) Math.PI / 180);
+
+		scene.camera().position.x = (float) Math.cos(radians) * CAM_RADIUS_X;
 		// scene.camera().position.y = (float)Math.sin(radians) * CAM_RADIUS_Y;
-		// scene.camera().position.z = (float)Math.sin(radians) * CAM_RADIUS_Z;
-		//
-		// degrees += ROTATION_SPEED;
+		scene.camera().position.z = (float) Math.sin(radians) * CAM_RADIUS_Z;
+
+		degrees += ROTATION_SPEED;
 	}
 
 	private void loadLabTexture(int num) {
@@ -235,6 +262,7 @@ public class MapRendererActivity extends RendererActivity implements
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
 		if (event.getAction() == MotionEvent.ACTION_DOWN) {
+			downX = event.getX();
 			downY = event.getY();
 		}
 
