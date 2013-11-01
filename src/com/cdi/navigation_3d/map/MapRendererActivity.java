@@ -1,6 +1,7 @@
 package com.cdi.navigation_3d.map;
 
-import com.cdi.navigation_3d.R;
+import java.util.Iterator;
+import java.util.List;
 
 import min3d.Shared;
 import min3d.Utils;
@@ -12,16 +13,19 @@ import min3d.vos.Light;
 import min3d.vos.LightType;
 import android.graphics.Bitmap;
 
+import com.cdi.navigation_3d.R;
+import com.cdi.navigation_3d.alg.Node;
+
 public class MapRendererActivity extends RendererActivity {
 	private final String material2color[][] = {{"011", "8d8d8d"},
 								  {"012", "a7a7a7"},
 								  {"013", "ffffff"},
 								  {"014", "ffffff"},
 								  {"ele", "ffffff"},
-								  {"i1", "ff69e7"},
-								  {"i2", "ff00e1"},
-								  {"i3", "ff00e1"},
-								  {"i4", "ff00e1"},
+//								  {"i1", "ff69e7"},
+//								  {"i2", "ff00e1"},
+//								  {"i3", "ff00e1"},
+//								  {"i4", "ff00e1"},
 								  {"lab 1", "ffc8c8"},
 								  {"lab 2", "bbf5a7"},
 								  {"lab 3", "fff400"},
@@ -32,9 +36,12 @@ public class MapRendererActivity extends RendererActivity {
 	private final float CAM_RADIUS_Y = 40;
 	private final float CAM_RADIUS_Z = 40;
 	private final float ROTATION_SPEED = 1;
-	private Object3dContainer monster;
 	private float degrees;
 
+	private Object3dContainer monster;
+	private List<Node> resultsList;
+	
+	
 	@Override
 	public void initScene() {
         Light light = new Light();
@@ -55,11 +62,25 @@ public class MapRendererActivity extends RendererActivity {
         initTexture();
         loadAllTexture();
 		
-//        changeToView3();
+        changeToView1();
 	}
 	
-	public void changeToView1() {
-		monster.scale().x = monster.scale().y = monster.scale().z  = .24f;
+	public void setResults(List<Node> _results) {
+		this.resultsList = _results;
+	}
+	
+	public void updateMap() {
+		loadAllTexture();
+		
+		Iterator iter = resultsList.iterator();
+		while(iter.hasNext()) {
+			Node node = (Node)iter.next();
+			monster.getChildByName(node.name).textures().addById("ff00e1");
+		}
+	}
+	
+	private void changeToView1() {
+		monster.scale().x = monster.scale().y = monster.scale().z  = .23f;
         monster.position().x = -12;
         monster.position().y = -3;
         monster.position().z = 0;
@@ -72,8 +93,8 @@ public class MapRendererActivity extends RendererActivity {
 		monster.getChildByName("lab 3_190").isVisible(false);
 	}
 
-	public void changeToView3() {
-		monster.scale().x = monster.scale().y = monster.scale().z  = .28f;
+	private void changeToView3() {
+		monster.scale().x = monster.scale().y = monster.scale().z  = .27f;
         monster.position().x = -12;
         monster.position().y = -19;
         monster.position().z = 0;
@@ -88,22 +109,25 @@ public class MapRendererActivity extends RendererActivity {
 	
 	@Override
 	public void updateScene() {
-		float radians = degrees * ((float)Math.PI / 180);
-
-		scene.camera().position.x = (float)Math.cos(radians) * CAM_RADIUS_X;
-		scene.camera().position.y = (float)Math.sin(radians) * CAM_RADIUS_Y;
-		scene.camera().position.z = (float)Math.sin(radians) * CAM_RADIUS_Z;
-
-		degrees += ROTATION_SPEED;
+//		float radians = degrees * ((float)Math.PI / 180);
+//
+//		scene.camera().position.x = (float)Math.cos(radians) * CAM_RADIUS_X;
+//		scene.camera().position.y = (float)Math.sin(radians) * CAM_RADIUS_Y;
+//		scene.camera().position.z = (float)Math.sin(radians) * CAM_RADIUS_Z;
+//
+//		degrees += ROTATION_SPEED;
 	}
+
 	
 	private void loadAllTexture() {
+		monster.textures().clear();
+		
 		int numChildren = monster.numChildren();
 		for(int i = 0; i < numChildren; i++) {
 			String name = monster.getChildAt(i).name();
 			
 			Boolean o = false;
-			for(int j = 0; j < 14; j++) {
+			for(int j = 0; j < 10; j++) {
 				if(name.startsWith(material2color[j][0])) {
 					monster.getChildAt(i).textures().clear();
 					monster.getChildAt(i).textures().addById(material2color[j][1]);
@@ -112,8 +136,9 @@ public class MapRendererActivity extends RendererActivity {
 				}
 			}
 			if(!o) {
-				monster.getChildAt(i).textures().clear();
-				monster.getChildAt(i).textures().addById("ff00e1");
+//				monster.getChildAt(i).textures().clear();
+//				monster.getChildAt(i).textures().addById("ff00e1");
+				monster.getChildAt(i).isVisible(false);
 			}
 		}
 	}
