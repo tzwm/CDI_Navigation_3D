@@ -12,12 +12,15 @@ import min3d.parser.Parser;
 import min3d.vos.Light;
 import min3d.vos.LightType;
 import android.graphics.Bitmap;
+import android.view.MotionEvent;
+import android.view.View;
+import android.view.View.OnClickListener;
 
 import com.cdi.navigation_3d.R;
 import com.cdi.navigation_3d.alg.Node;
 
-public class MapRendererActivity extends RendererActivity {
-	private final String material2color[][] = {{"011", "8d8d8d"},
+public class MapRendererActivity extends RendererActivity implements OnClickListener{
+	private final String MATERIAL2COLOR[][] = {{"011", "8d8d8d"},
 								  {"012", "a7a7a7"},
 								  {"013", "ffffff"},
 								  {"014", "ffffff"},
@@ -31,6 +34,7 @@ public class MapRendererActivity extends RendererActivity {
 								  {"lab 3", "fff400"},
 								  {"lab 4", "a3e8ff"},
 								  {"worksh", "ffffff"}};
+	private final String LABCOLOR[] = {"ffc8c8", "bbf5a7", "fff400", "a3e8ff"};
 	
 	private final float CAM_RADIUS_X = 40;
 	private final float CAM_RADIUS_Y = 40;
@@ -40,6 +44,7 @@ public class MapRendererActivity extends RendererActivity {
 
 	private Object3dContainer monster;
 	private List<Node> resultsList;
+	private int currentView;
 	
 	
 	@Override
@@ -61,8 +66,9 @@ public class MapRendererActivity extends RendererActivity {
         monster.colorMaterialEnabled(true);
         initTexture();
         loadAllTexture();
+//        loadLabTexture(3);
 		
-        changeToView1();
+        changeToView2();
 	}
 	
 	public void setResults(List<Node> _results) {
@@ -80,6 +86,7 @@ public class MapRendererActivity extends RendererActivity {
 	}
 	
 	private void changeToView1() {
+		currentView = 1;
 		monster.scale().x = monster.scale().y = monster.scale().z  = .23f;
         monster.position().x = -12;
         monster.position().y = -3;
@@ -93,7 +100,21 @@ public class MapRendererActivity extends RendererActivity {
 		monster.getChildByName("lab 3_190").isVisible(false);
 	}
 
+	private void changeToView2() {
+		currentView = 2;
+		monster.scale().x = monster.scale().y = monster.scale().z  = .23f;
+        monster.position().x = -10;
+        monster.position().y = -5;
+        monster.position().z = 0;
+        
+        scene.camera().position.setAll(0, 20, -40);
+		scene.camera().target.setAll(0, 0, 0);
+		
+		monster.getChildByName("012").isVisible(false);
+	}
+	
 	private void changeToView3() {
+		currentView = 3;
 		monster.scale().x = monster.scale().y = monster.scale().z  = .27f;
         monster.position().x = -12;
         monster.position().y = -19;
@@ -119,6 +140,26 @@ public class MapRendererActivity extends RendererActivity {
 	}
 
 	
+	private void loadLabTexture(int num) {
+		String lab = "lab " + num;
+		String lab_color = LABCOLOR[num-1];
+		
+		monster.textures().clear();
+		
+		int numChildren = monster.numChildren();
+		for(int i = 0; i < numChildren; i++) {
+			String name = monster.getChildAt(i).name();
+			
+			if (name.startsWith(lab)) {
+				monster.getChildAt(i).textures().clear();
+				monster.getChildAt(i).textures().addById(lab_color);
+			}
+			else {
+				monster.getChildAt(i).isVisible(false);
+			}
+		}
+	}
+	
 	private void loadAllTexture() {
 		monster.textures().clear();
 		
@@ -128,9 +169,9 @@ public class MapRendererActivity extends RendererActivity {
 			
 			Boolean o = false;
 			for(int j = 0; j < 10; j++) {
-				if(name.startsWith(material2color[j][0])) {
+				if(name.startsWith(MATERIAL2COLOR[j][0])) {
 					monster.getChildAt(i).textures().clear();
-					monster.getChildAt(i).textures().addById(material2color[j][1]);
+					monster.getChildAt(i).textures().addById(MATERIAL2COLOR[j][1]);
 					o = true;
 					break;
 				}
@@ -181,5 +222,32 @@ public class MapRendererActivity extends RendererActivity {
         b = Utils.makeBitmapFromResourceId(R.drawable.c_ffffff);
         Shared.textureManager().addTextureId(b,"ffffff");
         b.recycle();
+	}
+	
+    @Override
+	public boolean onTouchEvent(MotionEvent event){
+		if(event.getAction() == MotionEvent.ACTION_UP) {
+			switch (currentView) {
+			case 1:
+				changeToView2();
+				break;
+			case 2:
+				changeToView3();
+				break;
+			case 3:
+				changeToView1();
+				break;
+			default:
+				break;
+			}
+		}
+    	
+    	return true;
+    }
+    
+	@Override
+	public void onClick(View v) {
+		// TODO Auto-generated method stub
+		
 	}
 }
