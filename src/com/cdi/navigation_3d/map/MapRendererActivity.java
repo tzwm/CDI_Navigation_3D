@@ -17,7 +17,9 @@ import android.view.View;
 import android.view.View.OnClickListener;
 
 import com.cdi.navigation_3d.R;
-import com.cdi.navigation_3d.alg.Node;
+import com.cdi.navigation_3d.alg.Arc;
+import com.cdi.navigation_3d.alg.Graph;
+import com.cdi.navigation_3d.ui.G;
 
 public class MapRendererActivity extends RendererActivity implements OnClickListener{
 	private final String MATERIAL2COLOR[][] = {{"011", "8d8d8d"},
@@ -43,12 +45,14 @@ public class MapRendererActivity extends RendererActivity implements OnClickList
 	private float degrees;
 
 	private Object3dContainer monster;
-	private List<Node> resultsList;
+	private List<Arc> resultsEdgeList;
 	private int currentView;
-	
+
 	
 	@Override
 	public void initScene() {
+		resultsEdgeList = Graph.nodes2arcs(G.result);
+		
         Light light = new Light();
         light.type(LightType.DIRECTIONAL);
         light.position.setAll(300, 150, 150);
@@ -66,21 +70,18 @@ public class MapRendererActivity extends RendererActivity implements OnClickList
         monster.colorMaterialEnabled(true);
         initTexture();
         loadAllTexture();
-//        loadLabTexture(3);
+        loadLabTexture(2);
+        updateMap();
 		
         changeToView2();
 	}
 	
-	public void setResults(List<Node> _results) {
-		this.resultsList = _results;
-	}
-	
 	public void updateMap() {
-		loadAllTexture();
-		
-		Iterator iter = resultsList.iterator();
+		Iterator iter = resultsEdgeList.iterator();
 		while(iter.hasNext()) {
-			Node node = (Node)iter.next();
+			Arc node = (Arc)iter.next();
+			monster.getChildByName(node.name).isVisible(true);
+			monster.getChildByName(node.name).textures().clear();
 			monster.getChildByName(node.name).textures().addById("ff00e1");
 		}
 	}
