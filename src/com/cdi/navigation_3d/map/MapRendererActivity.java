@@ -16,6 +16,7 @@ import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.Toast;
 
 import com.cdi.navigation_3d.R;
 import com.cdi.navigation_3d.alg.Arc;
@@ -88,7 +89,8 @@ public class MapRendererActivity extends RendererActivity implements
 		initTexture();
 		loadAllTexture();
 		updateRoute();
-		loadLabTexture(2);
+		currentLayer = 1;
+//		loadLabTexture(2);
 
 		changeToView2();
 	}
@@ -199,6 +201,8 @@ public class MapRendererActivity extends RendererActivity implements
 		if (num == 1) {
 			monster.getChildByName("lab 2_151").isVisible(false);
 		}
+		
+		Toast.makeText(this, "Layer "+num, Toast.LENGTH_SHORT).show();
 	}
 
 	private void loadAllTexture() {

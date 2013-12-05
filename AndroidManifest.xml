@@ -8,6 +8,9 @@
         android:minSdkVersion="8"
         android:targetSdkVersion="18" />
     <uses-permission android:name="android.permission.CAMERA"/>
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+    <uses-permission android:name="android.permission.INTERNET"/>
 
     <application
         android:allowBackup="true"
@@ -39,6 +42,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <receiver android:name=".location.WifiScanReceiver">
+            <intent-filter>
+                <action android:name="android.net.wifi.SCAN_RESULTS"/>
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>

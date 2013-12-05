@@ -10,7 +10,7 @@ public class Node {
 	public String name;
 	public String disp_name;
 	int dis;
-	Arc arc;
+	public Arc arc;
 	Node prev;
 	
 	public int getIndex(){return index;}

@@ -6,6 +6,7 @@ import java.util.List;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.res.AssetManager;
+import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -18,6 +19,7 @@ import android.widget.Spinner;
 import com.cdi.navigation_3d.R;
 import com.cdi.navigation_3d.alg.Graph;
 import com.cdi.navigation_3d.alg.Node;
+import com.cdi.navigation_3d.location.LocationThread;
 
 public class HelloActivity extends Activity implements OnClickListener,OnItemSelectedListener{
 	
@@ -25,7 +27,6 @@ public class HelloActivity extends Activity implements OnClickListener,OnItemSel
 	private Spinner sp_from;
 	private Spinner sp_to;
 	private ImageButton button;
-	private Graph g;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -39,9 +40,9 @@ public class HelloActivity extends Activity implements OnClickListener,OnItemSel
 		//lv.setAdapter(lv_adapter);
 		AssetManager asset=getAssets();
 		try {
-			g=Graph.build(asset.open("map.txt"));
-			g.reset();
-			for (int i=0;i<g.nodeCount();++i) if (g.getNode(i).toString()!=null) nodes.add(g.getNode(i));
+			G.g=Graph.build(asset.open("map.txt"));
+			G.g.reset();
+			for (int i=0;i<G.g.nodeCount();++i) if (G.g.getNode(i).toString()!=null) nodes.add(G.g.getNode(i));
 			sp_from.setAdapter(new ArrayAdapter<Node>(this, android.R.layout.simple_spinner_item,nodes));
 			sp_to.setAdapter(new ArrayAdapter<Node>(this, android.R.layout.simple_spinner_item,nodes));
 			sp_from.setOnItemSelectedListener(this);
@@ -50,13 +51,16 @@ public class HelloActivity extends Activity implements OnClickListener,OnItemSel
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		new LocationThread().start();
+		G.location.init(this);
+		((WifiManager) getSystemService(WIFI_SERVICE)).startScan();
 	}
 		
 	@Override
 	public void onItemSelected(AdapterView<?> par, View v, int arg2, long arg3) {
 		Node from=(Node)sp_from.getSelectedItem();
 		Node to=(Node)sp_to.getSelectedItem();
-		G.result=g.spfa(from, to);
+		G.result=G.g.spfa(from, to);
 	}
 
 	@Override

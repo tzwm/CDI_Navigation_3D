@@ -1,9 +1,9 @@
 package com.cdi.navigation_3d.alg;
 
 public class Arc {
-	Node target;
+	public Node target;
 	int value = 1;
-	Arc next = null;
+	public Arc next = null;
 	public String name;
 	
 	Arc(Node from,Node to, String name){
