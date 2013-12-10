@@ -12,7 +12,6 @@ import com.cdi.navigation_3d.location.OnLocationChangedListener;
 public class G {
 	
 	public static List<Node> result = null;
-	public static Graph g;
-	
+	public static Graph g;	
 	public static LocationManager location = new LocationManager();
 }

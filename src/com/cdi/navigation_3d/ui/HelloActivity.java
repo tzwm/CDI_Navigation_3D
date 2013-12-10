@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.content.res.AssetManager;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
@@ -19,7 +20,9 @@ import android.widget.Spinner;
 import com.cdi.navigation_3d.R;
 import com.cdi.navigation_3d.alg.Graph;
 import com.cdi.navigation_3d.alg.Node;
+import com.cdi.navigation_3d.location.LocationOnWayBean;
 import com.cdi.navigation_3d.location.LocationThread;
+import com.cdi.navigation_3d.location.OnLocationChangedListener;
 
 public class HelloActivity extends Activity implements OnClickListener,OnItemSelectedListener{
 	
@@ -54,6 +57,15 @@ public class HelloActivity extends Activity implements OnClickListener,OnItemSel
 		new LocationThread().start();
 		G.location.init(this);
 		((WifiManager) getSystemService(WIFI_SERVICE)).startScan();
+		G.location.setOnLocationChangedListener(new OnLocationChangedListener() {
+			
+			@Override
+			public void LocationChanged(LocationOnWayBean lb) {
+				LocationOnWayBean b=lb.from("n11");
+				Log.e("",b.toString());
+				
+			}
+		});
 	}
 		
 	@Override

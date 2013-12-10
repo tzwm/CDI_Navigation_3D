@@ -119,4 +119,5 @@ public class Graph {
 	public int nodeCount(){return nodes==null?0:nodes.length;}
 	public Node getNode(int i){return nodes[i];}
 	public Node getNode(String name){ for (Node n:nodes) if (n.name.equals(name)) return n;return null;}
+	
 }

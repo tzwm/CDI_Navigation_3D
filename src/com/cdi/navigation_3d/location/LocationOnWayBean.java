@@ -1,5 +1,12 @@
 package com.cdi.navigation_3d.location;
 
+import java.util.HashSet;
+import java.util.Set;
+
+import com.cdi.navigation_3d.alg.Arc;
+import com.cdi.navigation_3d.alg.Node;
+import com.cdi.navigation_3d.ui.G;
+
 public class LocationOnWayBean {
 	private LocationBean realLocation;
 	private LocationBeanEx startNode;
@@ -47,4 +54,29 @@ public class LocationOnWayBean {
 		this.distance = distance;
 	}
 
+	private LocationBeanEx find(Node n){
+		if (n.name.equals(startNode.getName())) return startNode;
+		if (n.name.equals(endNode.getName())) return endNode;
+		if (visited.contains(n)) return null;
+		visited.add(n);
+		for (Arc a=n.arc;a!=null;a=a.next){
+			LocationBeanEx nn=find(a.target);
+			if (nn!=null) return nn;
+		}
+		return null;
+	}
+	
+	private Set<Node> visited;
+	public LocationOnWayBean from(String start){
+		visited=new HashSet<Node>();
+		Node s=G.g.getNode(start);
+		LocationBeanEx n=find(s);
+		if (n==endNode){
+			endNode=startNode;
+			rate=1-rate;
+			startNode=n;
+		}
+		return this;
+	}
+	
 }
