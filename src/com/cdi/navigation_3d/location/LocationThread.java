@@ -32,7 +32,7 @@ public class LocationThread extends Thread {
 	}
 	
 	static class LocationHandler extends Handler{
-		private final boolean DEBUG = true;
+		private final boolean DEBUG = false;
 
 		private final String BASE_URL = "https://its.navizon.com/api/v1/";
 		private final String SITE_ID = "1088"; // Your site ID here
@@ -58,6 +58,7 @@ public class LocationThread extends Thread {
 			return ret;
 		}
 		
+		@SuppressWarnings("unused")
 		public void debugdata(Map<String, Integer> map) {
 			if (!DEBUG) return;
 			map.clear();

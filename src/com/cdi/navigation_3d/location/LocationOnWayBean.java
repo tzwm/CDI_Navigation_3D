@@ -9,6 +9,7 @@ import com.cdi.navigation_3d.ui.G;
 
 public class LocationOnWayBean {
 	private LocationBean realLocation;
+	private LocationBeanEx nearestNode;
 	private LocationBeanEx startNode;
 	private LocationBeanEx endNode;
 	private String wayName;
@@ -77,6 +78,12 @@ public class LocationOnWayBean {
 			startNode=n;
 		}
 		return this;
+	}
+	public LocationBeanEx getNearestNode() {
+		return nearestNode;
+	}
+	public void setNearestNode(LocationBeanEx nearestNode) {
+		this.nearestNode = nearestNode;
 	}
 	
 }

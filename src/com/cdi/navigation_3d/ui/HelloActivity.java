@@ -16,6 +16,7 @@ import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.cdi.navigation_3d.R;
 import com.cdi.navigation_3d.alg.Graph;
@@ -63,7 +64,9 @@ public class HelloActivity extends Activity implements OnClickListener,OnItemSel
 			public void LocationChanged(LocationOnWayBean lb) {
 				LocationOnWayBean b=lb.from("n11");
 				Log.e("",b.toString());
-				
+				Toast.makeText(HelloActivity.this, b.getNearestNode().getName()+"\n"
+						+b.getRealLocation().getLng()+"\n"+b.getRealLocation().getLat()+"\n"
+				+b.getWayName()+"\n"+b.getRate(), Toast.LENGTH_SHORT).show();
 			}
 		});
 	}

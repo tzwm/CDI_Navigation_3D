@@ -15,11 +15,13 @@ import com.cdi.navigation_3d.alg.Node;
 import com.cdi.navigation_3d.ui.G;
 
 import android.content.Context;
+import android.os.Handler;
 
 public class LocationManager {
 	private OnLocationChangedListener onLocationChangedListener=null;
 	private Context context;
 	private List<LocationBeanEx> list=new ArrayList<LocationBeanEx>();
+	private Handler handler=new Handler();
 	
 	public LocationManager() {
 		
@@ -27,7 +29,7 @@ public class LocationManager {
 	
 	public void init(Context context){
 		this.context=context;
-		readFile("l3.txt",3);
+		readFile("l3_4.txt",3);
 	}
 	
 	private void readFile(String filename,int level){
@@ -75,6 +77,15 @@ public class LocationManager {
 			}
 		}
 		computeRate(low);
+		
+		minDis=(double)0x7fffffff;
+		for (LocationBeanEx lbe:list){
+			double d=distance(lbe, lb);
+			if (d<minDis) {
+				minDis=d;
+				low.setNearestNode(lbe);
+			}
+		}
 	}
 	
 	public void computeRate(LocationOnWayBean low){
@@ -163,7 +174,13 @@ public class LocationManager {
     	LocationOnWayBean b=new LocationOnWayBean();
 		b.setRealLocation(lb);
 		computeLocationOnway(b);
+		final LocationOnWayBean B=b;
 		if (onLocationChangedListener!=null)
-			onLocationChangedListener.LocationChanged(b);
+			handler.post(new Runnable() {			
+				@Override
+				public void run() {
+					onLocationChangedListener.LocationChanged(B);
+				}
+			});			
     }
 }
