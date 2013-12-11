@@ -29,7 +29,7 @@ public class LocationManager {
 	
 	public void init(Context context){
 		this.context=context;
-		readFile("l3_4.txt",3);
+		readFile("l3_1.txt",3);
 	}
 	
 	private void readFile(String filename,int level){
@@ -116,7 +116,8 @@ public class LocationManager {
 	}
 	
 	public double distance(LocationBean p1,LocationBean p2){
-		return Math.sqrt(squreDistance(p1,p2));
+		//return Math.sqrt(squreDistance(p1,p2));
+		return GetDistance(p1.getLat(), p1.getLng(), p2.getLat(), p2.getLng());
 	}
 	
 	public double squreDistance(LocationBean p1,LocationBean p2){
@@ -183,5 +184,25 @@ public class LocationManager {
 					onLocationChangedListener.LocationChanged(B);
 				}
 			});			
+    }
+    
+    private final double EARTH_RADIUS = 6378.137;//µØÇò°ë¾¶
+    private double rad(double d)
+    {
+       return d * Math.PI / 180.0;
+    }
+
+    public double GetDistance(double lat1, double lng1, double lat2, double lng2)
+    {
+       double radLat1 = rad(lat1);
+       double radLat2 = rad(lat2);
+       double a = radLat1 - radLat2;
+       double b = rad(lng1) - rad(lng2);
+
+       double s = 2 * Math.asin(Math.sqrt(Math.pow(Math.sin(a/2),2) +
+        Math.cos(radLat1)*Math.cos(radLat2)*Math.pow(Math.sin(b/2),2)));
+       s = s * EARTH_RADIUS;
+       //s = Math.round(s * 10000) / 10000;
+       return s;
     }
 }
