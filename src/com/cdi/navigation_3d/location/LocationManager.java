@@ -171,6 +171,7 @@ public class LocationManager {
     }
     
     public void invoke(LocationBean lb){
+    	if (lb==null) return;
     	LocationOnWayBean b=new LocationOnWayBean();
 		b.setRealLocation(lb);
 		computeLocationOnway(b);
