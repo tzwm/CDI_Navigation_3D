@@ -21,6 +21,8 @@ import android.widget.Toast;
 import com.cdi.navigation_3d.R;
 import com.cdi.navigation_3d.alg.Arc;
 import com.cdi.navigation_3d.alg.Graph;
+import com.cdi.navigation_3d.location.LocationOnWayBean;
+import com.cdi.navigation_3d.location.OnLocationChangedListener;
 import com.cdi.navigation_3d.ui.G;
 
 public class MapRendererActivity extends RendererActivity implements
@@ -93,6 +95,22 @@ public class MapRendererActivity extends RendererActivity implements
 //		loadLabTexture(2);
 
 		changeToView2();
+		
+		G.location.setOnLocationChangedListener(new OnLocationChangedListener() {
+			
+			@Override
+			public void LocationChanged(LocationOnWayBean lb) {
+				// TODO Auto-generated method stub
+				if (G.to!=null){
+					resultsEdgeList = Graph.nodes2arcs(
+							G.g.spfa(lb.getNearestNode().getName(), G.to.name)
+					);
+				}
+				
+				
+				updateRoute();
+			}
+		});
 	}
 
 	public void updateRoute() {

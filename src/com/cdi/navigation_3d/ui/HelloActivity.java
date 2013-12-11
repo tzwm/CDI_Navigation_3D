@@ -73,9 +73,9 @@ public class HelloActivity extends Activity implements OnClickListener,OnItemSel
 		
 	@Override
 	public void onItemSelected(AdapterView<?> par, View v, int arg2, long arg3) {
-		Node from=(Node)sp_from.getSelectedItem();
-		Node to=(Node)sp_to.getSelectedItem();
-		G.result=G.g.spfa(from, to);
+		G.from=(Node)sp_from.getSelectedItem();
+		G.to=(Node)sp_to.getSelectedItem();
+		G.result=G.g.spfa(G.from, G.to);
 	}
 
 	@Override

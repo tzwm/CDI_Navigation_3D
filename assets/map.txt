@@ -25,18 +25,18 @@ n24 -
 n25 -
 n26 -
 n27 -
-si21 厕所
+si21 F2_厕所
 i22 Physical_Computing
 i23 Audience
 
 w31 下2楼楼梯口
 w32 上4楼楼梯口
-w33 西门
-w34 东门
+w33 F3_西门
+w34 F3_东门
 w36 工坊下3楼楼梯口
-i31 Close_Lab
-i32 Open_Lab
-s31 厕所
+i31 Open_Lab
+i32 Close_Lab
+s31 F3_厕所
 o31 工坊3楼
 o32 工坊楼梯
 n31 -
