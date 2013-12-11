@@ -21,6 +21,7 @@ import android.widget.Toast;
 import com.cdi.navigation_3d.R;
 import com.cdi.navigation_3d.alg.Arc;
 import com.cdi.navigation_3d.alg.Graph;
+import com.cdi.navigation_3d.alg.Node;
 import com.cdi.navigation_3d.location.LocationOnWayBean;
 import com.cdi.navigation_3d.location.OnLocationChangedListener;
 import com.cdi.navigation_3d.ui.G;
@@ -50,6 +51,7 @@ public class MapRendererActivity extends RendererActivity implements
 
 	private Object3dContainer monster;
 	private List<Arc> resultsEdgeList;
+	private List<Arc> edgesList;
 	private int currentView;
 	private int currentLayer;
 
@@ -68,6 +70,7 @@ public class MapRendererActivity extends RendererActivity implements
 
 	@Override
 	public void initScene() {
+
 		resultsEdgeList = Graph.nodes2arcs(G.result);
 		currentView = 0;
 		currentLayer = 2;
@@ -107,12 +110,22 @@ public class MapRendererActivity extends RendererActivity implements
 					);
 				}
 				
-				
+				cleanRoute();
 				updateRoute();
 			}
 		});
 	}
 
+	public void cleanRoute() {
+		for (int i = 0; i < G.g.nodeCount(); i++) {
+			Node d = G.g.getNode(i);
+			for (Arc j = d.arc; j!=null; j=j.next) {
+				monster.getChildByName(j.name).isVisible(false);
+			}
+		}
+		
+	}
+	
 	public void updateRoute() {
 		Iterator iter = resultsEdgeList.iterator();
 		while (iter.hasNext()) {
