@@ -20,6 +20,7 @@ public class Graph {
 	private Node[] nodes;
 	private List<Node> result=new ArrayList<Node>();
 	private Queue<Node> queue=new LinkedList<Node>();
+	private int[][] dis; 
 	
 	public static Graph build(InputStream f) throws Exception{
 		Graph g=new Graph();
@@ -57,6 +58,32 @@ public class Graph {
 		if (node!=null){
 			genResult(node.prev);
 			result.add(node);
+		}
+	}
+	
+	public void floyd(){
+		int l=nodes.length;
+		dis=new int[l][l];
+		for (int i=0;i<l;++i){
+			for (int j=0;j<l;++j){
+				dis[i][j]=0x3fffffff;
+			}	
+		}
+		for (int i=0;i<l;++i){
+			dis[i][i]=0;
+		}
+		for (Node n:nodes){
+			for (Arc a=n.arc;a!=null;a=a.next){
+				dis[n.getIndex()][a.target.getIndex()]=1;
+			}
+		}
+		for (int k=0;k<l;++k){
+			for (int i=0;i<l;++i){
+				for (int j=0;j<l;++j){
+					if (dis[i][k]+dis[k][j]<dis[i][j])
+						dis[i][j]=dis[i][k]+dis[k][j];
+				}
+			}	
 		}
 	}
 	
@@ -116,6 +143,8 @@ public class Graph {
 		return ret;
 	}
 	
+	public int distance(int i,int j){return dis[i][j];}
+	public int distance(String i,String j){return dis[getNode(i).getIndex()][getNode(j).getIndex()];}
 	public int nodeCount(){return nodes==null?0:nodes.length;}
 	public Node getNode(int i){return nodes[i];}
 	public Node getNode(String name){ for (Node n:nodes) if (n.name.equals(name)) return n;return null;}

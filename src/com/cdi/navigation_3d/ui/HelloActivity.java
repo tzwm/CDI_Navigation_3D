@@ -21,6 +21,8 @@ import android.widget.Toast;
 import com.cdi.navigation_3d.R;
 import com.cdi.navigation_3d.alg.Graph;
 import com.cdi.navigation_3d.alg.Node;
+import com.cdi.navigation_3d.location.LocationAlgHolder;
+import com.cdi.navigation_3d.location.LocationBeanEx;
 import com.cdi.navigation_3d.location.LocationOnWayBean;
 import com.cdi.navigation_3d.location.LocationThread;
 import com.cdi.navigation_3d.location.OnLocationChangedListener;
@@ -46,6 +48,7 @@ public class HelloActivity extends Activity implements OnClickListener,OnItemSel
 		try {
 			G.g=Graph.build(asset.open("map.txt"));
 			G.g.reset();
+			G.g.floyd();
 			for (int i=0;i<G.g.nodeCount();++i) if (G.g.getNode(i).toString()!=null) nodes.add(G.g.getNode(i));
 			sp_from.setAdapter(new ArrayAdapter<Node>(this, android.R.layout.simple_spinner_item,nodes));
 			sp_to.setAdapter(new ArrayAdapter<Node>(this, android.R.layout.simple_spinner_item,nodes));
@@ -64,7 +67,9 @@ public class HelloActivity extends Activity implements OnClickListener,OnItemSel
 			public void LocationChanged(LocationOnWayBean lb) {
 				LocationOnWayBean b=lb.from("n11");
 				Log.e("",b.toString());
-				Toast.makeText(HelloActivity.this, b.getNearestNode().getName()+"\n"
+				LocationBeanEx lbe=b.getNearestNode();
+				lbe=LocationAlgHolder.locate(lbe);
+				Toast.makeText(HelloActivity.this, lbe.getName()+"\n"
 						+b.getRealLocation().getLng()+"\n"+b.getRealLocation().getLat()+"\n"
 				+b.getWayName()+"\n"+b.getRate(), Toast.LENGTH_SHORT).show();
 			}
